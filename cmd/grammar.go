@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/eyewritecode/jlpt-crawler/internal/crawler"
 	"github.com/eyewritecode/jlpt-crawler/internal/utils"
 	"github.com/spf13/cobra"
 )
@@ -22,7 +23,7 @@ var grammarCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(url)
+		crawler.DownloadGrammarCard(url)
 	},
 }
 

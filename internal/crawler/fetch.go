@@ -100,7 +100,7 @@ func DownloadGrammarCard(detailURL, word, destDir string) error {
 		return fmt.Errorf("failed to parse detail HTML: %w", err)
 	}
 
-	imgSrc, exists := doc.Find(".jl-card-image img").Attr("src")
+	imgSrc, exists := doc.Find(".grammar-thumbnail-cont a").Attr("href")
 	if !exists || imgSrc == "" {
 		return fmt.Errorf("image not found for %s", word)
 	}

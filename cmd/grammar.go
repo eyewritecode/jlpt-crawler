@@ -30,8 +30,8 @@ var grammarCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		fmt.Printf("Found %d grammar points for JLPT %s:\n", len(items), level)
-		for i, item := range items {
-			fmt.Printf("%d. %s: %s\n", i+1, item.Word, item.DetailLink)
+		for _, item := range items {
+			crawler.DownloadGrammarCard(item.DetailLink, item.Word, "images")
 		}
 	},
 }

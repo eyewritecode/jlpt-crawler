@@ -7,6 +7,7 @@ import (
 
 	"github.com/eyewritecode/jlpt-crawler/internal/crawler"
 	"github.com/eyewritecode/jlpt-crawler/internal/utils"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )
 
@@ -19,6 +20,7 @@ var grammarCmd = &cobra.Command{
 			fmt.Println("Error retrieving --level flag:", err)
 			os.Exit(1)
 		}
+
 		url, err := getGrammarListUrl(level)
 		if err != nil {
 			fmt.Println(err)
@@ -30,9 +32,15 @@ var grammarCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		fmt.Printf("Found %d grammar points for JLPT %s:\n", len(items), level)
+		bar := progressbar.Default(int64(len(items)), "Downloading...")
 		for _, item := range items {
-			crawler.DownloadGrammarCard(item.DetailLink, item.Word, "images")
+			err := crawler.DownloadGrammarCard(item.DetailLink, item.Word, "images")
+			if err != nil {
+				fmt.Printf("\nFailed to download %s: %v\n", item.Word, err)
+			}
+			bar.Add(1)
 		}
+		fmt.Println("\nDownload complete.")
 	},
 }
 

@@ -22,8 +22,17 @@ var grammarCmd = &cobra.Command{
 		url, err := getGrammarListUrl(level)
 		if err != nil {
 			fmt.Println(err)
+			os.Exit(1)
 		}
-		crawler.DownloadGrammarCard(url)
+		items, err := crawler.FetchAllGrammarItems(url)
+		if err != nil {
+			fmt.Println("Failed to fetch grammar items:", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Found %d grammar points for JLPT %s:\n", len(items), level)
+		for i, item := range items {
+			fmt.Printf("%d. %s: %s\n", i+1, item.Word, item.DetailLink)
+		}
 	},
 }
 
